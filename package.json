@@ -1,0 +1,14 @@
+{
+  "name": "wondersnap",
+  "version": "1.0.0",
+  "description": "Mô hình 3D điều khiển bằng cử chỉ, dựng từ hạt phát sáng với MediaPipe và WebGL2.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": { "start": "node server.mjs" },
+  "keywords": ["mediapipe", "webgl2", "particles", "hand-tracking", "gestures"],
+  "dependencies": {
+    "@mediapipe/tasks-vision": "^1.0.1"
+  }
+}
