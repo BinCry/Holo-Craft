@@ -587,13 +587,13 @@ class App {
 
   guideItems(machine) {
     return [
-      ['snap', '🫰', '<b>Snap</b> — summon particles / dissolve'],
-      ['fist', '✊', machine ? '<b>Fist</b> — put it together' : '<b>Fist</b> — form the wonder'],
-      ['open', '✋', machine ? '<b>Open slowly</b> — explode it, see inside' : '<b>Open hand</b> — morph to the next wonder'],
+      ['snap', '🫰', '<b>Snap</b> — particles / dissolve'],
+      ['fist', '✊', machine ? '<b>Fist</b> — assemble' : '<b>Fist</b> — form wonder'],
+      ['open', '✋', machine ? '<b>Open slowly</b> — explode view' : '<b>Open hand</b> — next wonder'],
       ['twist', '🔄', '<b>Twist / raise hand</b> — rotate & tilt it'],
-      ...(machine ? [['point', '☝', '<b>Point</b> at a part to learn it · <b>pinch</b> 🤏 pulls it out']] : []),
-      ['zoom', '🙌', '<b>Two hands</b> apart / together — zoom'],
-      ['peace', '✌', '<b>Peace</b> — jump to the next model'],
+      ...(machine ? [['point', '☝', '<b>Point</b> a part · <b>pinch</b> pulls it']] : []),
+      ['zoom', '🙌', '<b>Two hands</b> — zoom'],
+      ['peace', '✌', '<b>Peace</b> — next model'],
     ];
   }
 
