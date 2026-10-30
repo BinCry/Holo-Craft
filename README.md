@@ -8,7 +8,6 @@
   <img src="https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" alt="Node.js 18+">
   <img src="https://img.shields.io/badge/WebGL-2-990000?style=for-the-badge&logo=webgl&logoColor=white" alt="WebGL 2">
   <img src="https://img.shields.io/badge/MediaPipe-Hand%20Tracking-00A67E?style=for-the-badge&logo=google&logoColor=white" alt="MediaPipe">
-  <img src="https://img.shields.io/badge/Camera-Optional-4B8BBE?style=for-the-badge&logo=data:image/svg%2Bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCI+PHBhdGggZmlsbD0iI2ZmZiIgZD0iTTkgM2wyLTIgaDJsMiAySDIwYTIgMiAwIDAxMiAydjE0YTIgMiAwIDAxLTIgMkg0YTIgMiAwIDAxLTItMlY1YTIgMiAwIDAxMi0yeiBNMTIgN2E1IDUgMCAxMDAgMTAgNSA1IDAgMDAwLTEweiIvPjwvc3ZnPg==" alt="Camera Optional">
 </p>
 
 ## Chạy dự án
