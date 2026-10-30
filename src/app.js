@@ -285,7 +285,7 @@ class App {
     // 8. colour morph + per-part colours once a machine has formed
     const k = 1 - Math.exp(-dt * 4);
     for (let i = 0; i < 3; i++) this.color[i] += (def.color[i] - this.color[i]) * k;
-    const tintT = machine && st.state === FORMED ? smooth(0.2, 1.4, formT) : 0;
+    const tintT = ready && (machine || def.buildColored) && st.state === FORMED ? smooth(0.2, 1.4, formT) : 0;
     this.tintMix += (tintT - this.tintMix) * (1 - Math.exp(-dt * 5));
     const alpha = st.alpha(t);
 
@@ -582,6 +582,7 @@ class App {
       b.classList.toggle('active', active); b.setAttribute('aria-pressed', String(active));
     }
     this.chips.forEach((b) => { b.hidden = b.dataset.cat !== c; });
+    this.$('catChips').scrollLeft = 0;
   }
 
   guideItems(machine) {
@@ -610,8 +611,12 @@ class App {
       $('cat').textContent = def.category; $('name').textContent = def.name; $('fact').textContent = def.fact || '';
       $('bigTitle').querySelector('.t').textContent = def.name; $('bigTitle').querySelector('.s').textContent = def.fact || '';
       $('explodeBox').hidden = !isM;
-      this.chips.forEach((c, i) => c.classList.toggle('active', i === st.index));
       if (this.activeCat !== def.category) this.showCategory(def.category);
+      this.chips.forEach((c, i) => {
+        const active = i === st.index;
+        c.classList.toggle('active', active);
+        if (active) c.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+      });
       this.guideKey = null;
     }
     const pill = $('statePill');

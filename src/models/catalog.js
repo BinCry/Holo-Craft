@@ -1,13 +1,14 @@
 // Everything that can be summoned, in display order, plus the builder that turns a model into GPU buffers:
 //   target (xyz, normalized into the unit globe), offset (xyz explode vector + w stage), tint (rgb per particle).
 import { WONDERS } from './wonders.js';
+import { VIETNAM_WONDERS } from './vietnam-wonders.js';
 import { ENGINES } from './engines.js';
 import { VEHICLES2 } from './machines.js';
 import { makeRng } from '../lib/rng.js';
 import { build, flatten, allocate, shuffleIndex, normalize } from '../lib/sampling.js';
 
 export const CATALOG = [
-  ...WONDERS.map((w) => ({ ...w, kind: 'wonder', category: 'Wonders', tilt: 0 })),
+  ...[...WONDERS, ...VIETNAM_WONDERS].map((w) => ({ ...w, kind: 'wonder', category: 'Wonders', tilt: 0 })),
   ...ENGINES.map((e) => ({ ...e, kind: 'machine', category: 'Engines' })),
   ...VEHICLES2.map((v) => ({ ...v, kind: 'machine', category: 'Vehicles' })),
 ];
@@ -25,6 +26,29 @@ export function buildModel(index, n, seed = 0) {
   const tint = new Float32Array(n * 3);
 
   if (def.kind === 'wonder') {
+    if (def.buildColored) {
+      const prims = [], colors = [];
+      def.buildColored().forEach(({ parts, color }) => {
+        for (const p of flatten(parts)) { prims.push(p); colors.push(color); }
+      });
+      const counts = allocate(prims.map((p) => p.weight), n);
+      const tmp = new Float64Array(n * 3), tmpTint = new Float32Array(n * 3);
+      let off = 0;
+      prims.forEach((p, i) => {
+        const count = counts[i];
+        p.sample(count, rng, tmp, off);
+        for (let j = off * 3, end = (off + count) * 3; j < end; j += 3) tmpTint.set(colors[i], j);
+        off += count;
+      });
+      const perm = shuffleIndex(n, rng), target = new Float32Array(n * 3);
+      for (let i = 0; i < n; i++) {
+        const s = perm[i] * 3, d = i * 3;
+        target[d] = tmp[s]; target[d + 1] = tmp[s + 1]; target[d + 2] = tmp[s + 2];
+        tint[d] = tmpTint[s]; tint[d + 1] = tmpTint[s + 1]; tint[d + 2] = tmpTint[s + 2];
+      }
+      normalize(target);
+      return { index, def, n, target, offset, tint, pick: new Float32Array(n).fill(-1), labels: [], groups: [], fitScale: 1, exCenter: [0, 0, 0], ms: performance.now() - t0 };
+    }
     const target = build(def.build(), n, rng);
     normalize(target);
     for (let i = 0; i < n; i++) tint.set(def.color, i * 3);
