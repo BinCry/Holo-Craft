@@ -35,7 +35,7 @@ function camRanhInternationalAirport() {
  * and PLO's January 2023 restoration photographs; colours follow the supplied night photo.
  */
 function agarwoodTowerGroups() {
-  const base = [], white = [], glass = [], amber = [], flame = [], frames = [];
+  const base = [], white = [], glass = [], crown = [], crownWindows = [], flame = [], frames = [];
   // Low circular podium and broad front staircase.
   base.push(revolve([0, 1, 2, 3], [34, 34, 30, 28], { density: .25 }));
   for (let i = 0; i < 9; i++) {
@@ -85,16 +85,27 @@ function agarwoodTowerGroups() {
     }
   }
   // Five compact upper petals, with curved shoulders and pointed tips (not cones).
+  // The real crown is pale concrete, punctuated by cool blue-green glazed cells;
+  // it is deliberately not rendered as a gold/orange cap.
   for (let i = 0; i < bays; i++) {
     const center = (i + .5) * step;
-    const petal = (u, v) => {
+    const petal = (u, v, offset = 0) => {
       const roof = 77 + 8 * (1 - Math.abs(u) ** 1.4);
       const y = 59 + (roof - 59) * v;
-      const r = 8.1 + .9 * Math.sin(v * Math.PI);
+      const r = 8.1 + .9 * Math.sin(v * Math.PI) + offset;
       const a = center + u * step * .51;
       return [r * Math.sin(a), y, r * Math.cos(a)];
     };
-    amber.push(paramSurface(petal, -1, 1, 0, 1, { density: .85, gu: 24, gv: 22 }));
+    crown.push(paramSurface(petal, -1, 1, 0, 1, { density: .85, gu: 24, gv: 22 }));
+    // The restored tower uses tall, narrow blue-green glazed openings,
+    // separated by horizontal mullions. Keep them centered in each white petal
+    // instead of covering the facade in a square grid.
+    for (const [u0, u1] of [[-.42, -.035], [.035, .42]]) {
+      for (const [v0, v1] of [[.16, .34], [.39, .57], [.62, .8]]) {
+        crownWindows.push(paramSurface((u, v) => petal(u, v, .1), u0, u1, v0, v1,
+          { density: .48, gu: 8, gv: 5 }));
+      }
+    }
     frames.push(polyline(linspace(-1, 1, 40).map((u) => petal(u, 1)), 0, .65));
   }
   // A closed, faceted lotus bud, broad at the foot and tapering continuously.
@@ -131,7 +142,8 @@ function agarwoodTowerGroups() {
     { parts: base, color: [.85, .79, .61] },
     { parts: white, color: [.9, .87, .76] },
     { parts: glass, color: [.06, .52, .7] },
-    { parts: amber, color: [1, .32, .025] },
+    { parts: crown, color: [.82, .85, .82] },
+    { parts: crownWindows, color: [.12, .58, .55] },
     { parts: flame, color: [.78, .76, .83] },
     { parts: frames, color: [.63, .7, .72] },
   ];
